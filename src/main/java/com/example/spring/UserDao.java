@@ -4,9 +4,12 @@ import java.sql.*;
 
 public class UserDao {
     public void add(User user) throws ClassNotFoundException, SQLException {
+
+        //관심사 1. DB연결
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection c = DriverManager.getConnection("jdbc:mysql://localhost", "유저이름", "비밀번호");
 
+        //관심사 2. 사용자 등록을 위한 SQL문장을 담을 statement 생성 및 실행
         PreparedStatement ps = c.prepareStatement("insert into `user`.users(id, name, password) values(?,?,?)");
         ps.setString(1, user.getId());
         ps.setString(2, user.getName());
@@ -14,6 +17,7 @@ public class UserDao {
 
         ps.executeUpdate();
 
+        //관심사 3. 작업이 종료된 후 사용한 리소스를 닫아 시스템에 돌려줌
         ps.close();
         c.close();
     }
