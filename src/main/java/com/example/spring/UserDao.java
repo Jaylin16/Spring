@@ -2,7 +2,7 @@ package com.example.spring;
 
 import java.sql.*;
 
-public class UserDao {
+public abstract class UserDao {
     public void add(User user) throws ClassNotFoundException, SQLException {
 
         //관심사 1. DB연결
@@ -41,20 +41,25 @@ public class UserDao {
         return user;
     }
 
-    //관심사 분리. '관심사 1 - DB연결'에 대한 기능을 리팩토링의 "메소드 추출 기법"을 통해 관심사 분리
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection c = DriverManager.getConnection("jdbc:mysql://localhost", "유저이름", "비밀번호");
+//    //관심사 분리. '관심사 1 - DB연결'에 대한 기능을 리팩토링의 "메소드 추출 기법"을 통해 관심사 분리
+//    private Connection getConnection() throws ClassNotFoundException, SQLException {
+//        Class.forName("com.mysql.cj.jdbc.Driver");
+//        Connection c = DriverManager.getConnection("jdbc:mysql://localhost", "유저이름", "비밀번호");
+//
+//        return c;
+//    }
 
-        return c;
-    }
+    //추상 메소드.
+    //DB 연결에 대한 기능을 각 상황에 맞게 적용할 수 있도록 추상 메소드화.
+    //템플릿 메소드 패턴 : 상속을 통해 슈퍼클래스의 기능을 확장할 때 사용하는 디자인 패턴.
+    protected abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 
     //테스트용 main() 메소드 작성
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
+        UserDao dao = new NUserDao();
 
         User user = new User();
-        user.setId("test2");
+        user.setId("test3");
         user.setName("me");
         user.setPassword("choco");
 
