@@ -2,11 +2,17 @@ package com.example.spring;
 
 import java.sql.*;
 
-public abstract class UserDao {
+public class UserDao {
+    private SimpleConnectionMaker simpleConnectionMaker;
+
+    public UserDao() {
+        simpleConnectionMaker = new SimpleConnectionMaker();
+    }
+
     public void add(User user) throws ClassNotFoundException, SQLException {
 
         //관심사 1. DB연결
-        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.makeNewConnection();
 
         //관심사 2. 사용자 등록을 위한 SQL문장을 담을 statement 생성 및 실행
         PreparedStatement ps = c.prepareStatement("insert into `user`.users(id, name, password) values(?,?,?)");
@@ -22,7 +28,7 @@ public abstract class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = getConnection();
+        Connection c = simpleConnectionMaker.makeNewConnection();
 
         PreparedStatement ps = c.prepareStatement("select * from `user`.users WHERE id = ?");
         ps.setString(1, id);
@@ -49,17 +55,17 @@ public abstract class UserDao {
 //        return c;
 //    }
 
-    //추상 메소드.
-    //DB 연결에 대한 기능을 각 상황에 맞게 적용할 수 있도록 추상 메소드화.
-    //템플릿 메소드 패턴 : 상속을 통해 슈퍼클래스의 기능을 확장할 때 사용하는 디자인 패턴.
-    protected abstract Connection getConnection() throws ClassNotFoundException, SQLException;
+//    //추상 메소드.
+//    //DB 연결에 대한 기능을 각 상황에 맞게 적용할 수 있도록 추상 메소드화.
+//    //템플릿 메소드 패턴 : 상속을 통해 슈퍼클래스의 기능을 확장할 때 사용하는 디자인 패턴.
+//    protected abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 
     //테스트용 main() 메소드 작성
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new NUserDao();
+        UserDao dao = new UserDao();
 
         User user = new User();
-        user.setId("test3");
+        user.setId("test");
         user.setName("me");
         user.setPassword("choco");
 
