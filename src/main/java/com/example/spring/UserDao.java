@@ -3,16 +3,20 @@ package com.example.spring;
 import java.sql.*;
 
 public class UserDao {
-    private SimpleConnectionMaker simpleConnectionMaker;
 
+    //인터페이스를 통한 오브젝트 접근.
+    private ConnectionMaker connectionMaker;
+
+    //여기에서 인터페이스를 구현한 클래스를 연결.
     public UserDao() {
-        simpleConnectionMaker = new SimpleConnectionMaker();
+        connectionMaker = new DConnectionMaker();
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
 
         //관심사 1. DB연결
-        Connection c = simpleConnectionMaker.makeNewConnection();
+        //makeConnection 메소드는 인터페이스에 정의된 메소드를 사용하므로 클래스가 변경되도 상관없음.
+        Connection c = connectionMaker.makeConnection();
 
         //관심사 2. 사용자 등록을 위한 SQL문장을 담을 statement 생성 및 실행
         PreparedStatement ps = c.prepareStatement("insert into `user`.users(id, name, password) values(?,?,?)");
@@ -28,7 +32,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = simpleConnectionMaker.makeNewConnection();
+        Connection c = connectionMaker.makeConnection();
 
         PreparedStatement ps = c.prepareStatement("select * from `user`.users WHERE id = ?");
         ps.setString(1, id);
@@ -65,7 +69,7 @@ public class UserDao {
         UserDao dao = new UserDao();
 
         User user = new User();
-        user.setId("test");
+        user.setId("test1");
         user.setName("me");
         user.setPassword("choco");
 
