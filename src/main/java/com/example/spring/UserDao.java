@@ -5,11 +5,11 @@ import java.sql.*;
 public class UserDao {
 
     //인터페이스를 통한 오브젝트 접근.
-    private ConnectionMaker connectionMaker;
+    private final ConnectionMaker connectionMaker;
 
     //여기에서 인터페이스를 구현한 클래스를 연결.
-    public UserDao() {
-        connectionMaker = new DConnectionMaker();
+    public UserDao(ConnectionMaker connectionMaker) {
+        this.connectionMaker = connectionMaker;
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
@@ -64,23 +64,4 @@ public class UserDao {
 //    //템플릿 메소드 패턴 : 상속을 통해 슈퍼클래스의 기능을 확장할 때 사용하는 디자인 패턴.
 //    protected abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 
-    //테스트용 main() 메소드 작성
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao dao = new UserDao();
-
-        User user = new User();
-        user.setId("test1");
-        user.setName("me");
-        user.setPassword("choco");
-
-        dao.add(user);
-
-        System.out.println(user.getId() + "등록 성공");
-
-        User userCheck = dao.get(user.getId());
-        System.out.println(userCheck.getName());
-        System.out.println(userCheck.getPassword());
-
-        System.out.println(userCheck.getId() + "조회 성공");
-    }
 }
