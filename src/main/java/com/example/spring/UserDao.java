@@ -4,12 +4,22 @@ import java.sql.*;
 
 public class UserDao {
 
+    //싱글톤 패턴 사용을 위한 인스턴스 생성.
+    private static UserDao INSTANCE;
+
     //인터페이스를 통한 오브젝트 접근.
     private final ConnectionMaker connectionMaker;
 
     //여기에서 인터페이스를 구현한 클래스를 연결.
     public UserDao(ConnectionMaker connectionMaker) {
         this.connectionMaker = connectionMaker;
+    }
+
+    //싱글톤 패턴의 단점.
+    //private 생성자로 인해 ConnectionMaker 오브젝트를 넣어줄 수 없게 되었다.
+    public static synchronized UserDao getInstance() {
+        if (INSTANCE == null) INSTANCE = new UserDao(???);
+        return INSTANCE;
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
