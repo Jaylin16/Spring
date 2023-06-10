@@ -8,10 +8,10 @@ public class UserDao {
 
     //인터페이스를 통한 오브젝트 접근.
     //초기 설정 후 사용 중에는 바뀌지 않는 읽기 전용 인스턴스 변수.
-    private final ConnectionMaker connectionMaker;
+    private ConnectionMaker connectionMaker;
 
-    //여기에서 인터페이스를 구현한 클래스를 연결.
-    public UserDao(ConnectionMaker connectionMaker) {
+    //수정자 메소드 DI방식 사용
+    public void setConnectionMaker(ConnectionMaker connectionMaker) {
         this.connectionMaker = connectionMaker;
     }
 
