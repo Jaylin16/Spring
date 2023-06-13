@@ -1,25 +1,26 @@
 package com.example.spring;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class UserDao {
 
-    //인터페이스를 통한 오브젝트 접근.
-    //초기 설정 후 사용 중에는 바뀌지 않는 읽기 전용 인스턴스 변수.
-    private ConnectionMaker connectionMaker;
+//    //인터페이스를 통한 오브젝트 접근.
+//    //초기 설정 후 사용 중에는 바뀌지 않는 읽기 전용 인스턴스 변수.
+//    private ConnectionMaker connectionMaker;
+
+    private DataSource dataSource;
 
     //수정자 메소드 DI방식 사용
-    public void setConnectionMaker(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
-    public void add(User user) throws ClassNotFoundException, SQLException {
+    public void add(User user) throws SQLException {
 
         //관심사 1. DB연결
         //makeConnection 메소드는 인터페이스에 정의된 메소드를 사용하므로 클래스가 변경되도 상관없음.
-        Connection c = connectionMaker.makeConnection();
+        Connection c = dataSource.getConnection();
 
         //관심사 2. 사용자 등록을 위한 SQL문장을 담을 statement 생성 및 실행
         PreparedStatement ps = c.prepareStatement("insert into `user`.users(id, name, password) values(?,?,?)");
@@ -34,8 +35,8 @@ public class UserDao {
         c.close();
     }
 
-    public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection c = connectionMaker.makeConnection();
+    public User get(String id) throws SQLException {
+        Connection c = dataSource.getConnection();
 
         PreparedStatement ps = c.prepareStatement("select * from `user`.users WHERE id = ?");
         ps.setString(1, id);
