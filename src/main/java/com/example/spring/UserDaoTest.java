@@ -1,7 +1,7 @@
 package com.example.spring;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.sql.SQLException;
 
@@ -16,11 +16,11 @@ public class UserDaoTest {
 //        //지정된 connectionMaker을 받아서 UserDao를 생성.
 //        UserDao dao = new UserDao(connectionMaker);
 
-        //DaoFactory를 설정정보로 사용하는 애플리케이션 컨텍스트 오브젝트 생성.
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+//        //DaoFactory를 설정정보로 사용하는 애플리케이션 컨텍스트 오브젝트 생성.
+//        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 
-//        //xml 설정파일 연결
-//        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+        //xml 설정파일 연결
+        ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
 
         UserDao dao = context.getBean("userDao", UserDao.class);
 

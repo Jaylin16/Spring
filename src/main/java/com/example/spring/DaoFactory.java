@@ -28,7 +28,7 @@ public class DaoFactory {
 
     //위의 bean정보를 xml로 변환시 아래와 같음.
 //    <bean id="userDao" class="com.example.spring.UserDao">
-//        <property name="connectionMaker" ref="connectionMaker" />
+//        <property name="dataSource" ref="dataSource" />
 //    </bean>
 
 //    @Bean
@@ -51,5 +51,13 @@ public class DaoFactory {
 
         return dataSource;
     }
+
+    //위의 bean정보를 xml로 변환시 아래와 같음.
+//    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+//        <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
+//        <property name="url" value="jdbc:mysql://localhost" />
+//        <property name="username" value="유저이름" />
+//        <property name="password" value="비밀번호" />
+//    </bean>
 
 }
